@@ -1,0 +1,12 @@
+﻿@model IEnumerable<E_TicaretMVC.Models.OzellikDeger>
+<div class="form-group has-success">
+    <label class="col-lg-2 control-label">Özellik Değer</label>
+    <div class="col-lg-10">
+        <select class="form-control m-bot15" name="OzellikDegerID">
+            @foreach (var deger in Model)
+            {
+                <option value="@deger.OzellikDegerID">@deger.Adi</option>
+            }
+        </select>
+    </div>
+</div>

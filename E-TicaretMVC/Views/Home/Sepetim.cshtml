@@ -1,0 +1,129 @@
+﻿@model E_TicaretMVC.Models.Sepet
+@{
+    ViewBag.Title = "Sepetim";
+    Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
+}
+<script src="~/Content/web/js/jquery-1.10.0.min.js"></script>
+<script>
+    $(document).ready(function myfunction() {
+
+        $(".urunSil").click(function UrunSil() {
+
+            var uId = $(this).attr("name");//ürün idyi aldık
+            $.ajax({
+                type: "GET",
+                url: "/Home/SepetUrunAdetDusur",
+                data: { id: uId },//parametre gönderiyoruz
+                success: function myfunction() {
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/Home/Sepetim",
+                        success: function VeriGetir(veri) {
+                            $(".shopping-cart").html('');
+                            $(".shopping-cart").html(veri);
+                        }
+
+                    })
+
+                },
+                error: function myfunction() {
+
+                    alert("errorr");
+                }
+
+            });
+        });
+    });
+
+</script>
+
+
+
+<div class="content">
+    <div class="container">
+        <h2>SEPETİM</h2>
+
+        <div class="shopping-cart">
+            <div class="shopping-cart-products">
+                <ul class="shopping-product-detail">
+                    <li class="shopping-1">Ürün Resmi</li>
+                    <li class="shopping-2">Ürün Adı</li>
+                    <li class="shopping-3">Açıklama</li>
+                    <li class="shopping-4">Adet</li>
+                    <li class="shopping-5">Birim Fiyat</li>
+                    <li class="shopping-6">Toplam</li>
+                </ul>
+
+                <!-- REPEAT BY PRODUCT -->
+@if (Model != null)
+                {
+                    foreach (var item in Model.Urunler)
+                    {
+                <ul class="shopping-product-detail">
+                    <li class="shopping-1">
+                        @if (item.Urun.Resims != null)
+                        {
+                            <img src="@item.Urun.Resims.FirstOrDefault(x=>x.Varsayilan==true).OrtaYol" alt="product name" />
+                        }
+                    </li>
+                    <li class="shopping-2">
+                        <a href="/Home/UrunDetay/@item.Urun.UrunID">@item.Urun.Adi</a>
+                        
+                    </li>
+                    <li class="shopping-3">
+                        <p>@item.Urun.Aciklama</p>
+                    </li>
+                    <li class="shopping-4">
+                        <input type="number" name="Adet" value="@item.Adet" title="Adet" class="input-text qty text">
+                        @*<input type="button" value="-" class="minus">
+                        <input type="number" step="1" min="1" name="quantity" value="3" title="Qty" class="input-text qty text">
+                        <input type="button" value="+" class="plus">*@
+                    </li>
+                    <li class="shopping-5">
+                        @item.Tutar.ToString("C2")
+                     
+                    </li>
+                    <li class="shopping-6">
+                        @item.Tutar.ToString("C2")
+                        <button class="urunSil" name="@item.Urun.UrunID">X</button>
+                    </li>
+                </ul>
+}
+}
+              
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="/Home/Index" class="button-7">Alışverişe devam et</a>
+                </div>
+                <div class="col-md-5">
+                    
+                </div>
+                <div class="col-md-4">
+                    <div class="checkout-total">
+                        <p>
+                            Alt Toplam :
+                            @if (Model != null)
+                            {
+                                <span>Toplam:@Model.ToplamTutar.ToString("C2")</span>
+                            }
+                            else
+                            {
+                                <span>0 ₺</span>
+                            }
+                        </p>
+                        @*<p>Sub-total : $ 120</p>
+                        <p>TAX Total : $ 20</p>
+                        <p>Shipment Fee : $ 0.00</p>
+                        <hr />
+                        <p>Total : $ 120</p>*@
+                        <button class="button-6">Satın Al</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

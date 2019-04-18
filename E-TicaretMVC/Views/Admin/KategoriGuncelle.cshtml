@@ -1,0 +1,50 @@
+﻿@model E_TicaretMVC.Models.Kategori
+
+@{
+    ViewBag.Title = "KategoriGuncelle";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>KategoriGuncelle</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    
+    <div class="row" style="margin-top: 40px;">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+            Kategori Güncelle
+            </header>
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.KategoriID)
+            <div class="panel-body">
+                <form action="/Admin/KategoriGuncelle" class="form-horizontal tasi-form" method="post">
+                   
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">Kategori Adı:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="Adi" value="@Model.Adi">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">Açıklama</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="Aciklama" value="@Model.Aciklama">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <button class="btn btn-danger" type="submit">KAYDET</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </div>
+</div>
+}

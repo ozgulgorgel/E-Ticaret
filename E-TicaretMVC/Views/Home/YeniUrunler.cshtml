@@ -1,0 +1,78 @@
+﻿@model IEnumerable<E_TicaretMVC.Models.Urun>
+<script src="~/Content/Sablon/js/jquery-1.10.0.min.js"></script>
+
+<script>
+    $(document).ready(function myfunction() {
+        $(".sepeteAt").click(function myfunction() {
+            var uid = $(this).attr("name");
+
+            $.ajax({
+                type: "GET",
+                url: "/Home/SepeteEkle",
+                data: { id: uid },
+                success: function myfunction() {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Home/MiniSepetWidget",
+                        success: function VeriGetir(veri) {
+                            $(".cart-all").html('');
+                            $(".cart-all").html(veri);
+
+                        }
+                    });
+                   
+                },
+                error: function myfunction() {
+                    alert(" Ürün Sepete Eklenemedi");
+                }
+
+            });
+        });
+    });
+
+</script>
+
+ <!-- new-products -->
+<div class="new-products">
+    <div class="container">
+        <h3> Ürünler</h3>
+        <div class="agileinfo_new_products_grids">
+         @foreach (var urun in Model)
+                    {
+            <div class="col-md-3 agileinfo_new_products_grid">
+                <div class="agile_ecommerce_tab_left agileinfo_new_products_grid1">
+                    <div class="hs-wrapp hs-wrappe">
+                        @if (urun.Resims.Count > 0 && urun.Resims.Any(x => x.Varsayilan == true))
+                         {
+             <img src="@urun.Resims.FirstOrDefault(x => x.Varsayilan == true).OrtaYol" alt="@urun.Adi" class="img-responsive" />
+
+    
+                        }
+                        
+                        
+                    </div>
+                    <h5><a href="/Home/UrunDetay/@urun.Adi">@urun.Adi</a></h5>
+                   
+                    <div class="simpleCart_shelfItem">
+                        <p> <i class="item_price">@urun.SatisFiyat</i></p>
+                        <form action="#" method="post">
+                            <input type="hidden" name="cmd" value="_cart">
+                            <input type="hidden" name="add" value="1">
+                            <input type="hidden" name="w3ls_item" value="Red Laptop">
+                            <input type="hidden" name="amount" value="500.00">
+                            
+                            @*<button type="submit" class="w3ls-cart">Sepete Ekle</button>*@
+                           
+                            <a href="#" class="sepeteAt w3ls-cart" name="@urun.UrunID">Sepete Ekle</a>
+                            
+                         </form>
+                    </div>
+                </div>
+            </div>
+                    }
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
+<!-- //new-products -->
+

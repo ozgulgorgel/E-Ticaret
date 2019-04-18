@@ -1,0 +1,16 @@
+﻿@model IEnumerable<E_TicaretMVC.Models.Kategori>
+
+
+<div class="w3ls_mobiles_grid_left_grid">
+    <h3>Kategoriler</h3>
+    <div class="w3ls_mobiles_grid_left_grid_sub">
+        <ul class="panel_bottom">
+            @foreach (var item in Model)
+            {
+                <li>
+                    <a href="/Home/Urunler/@item.KategoriID">@item.Adi (@item.Uruns.Count)</a>
+                </li>
+            }
+            </ul>
+</div>
+</div>

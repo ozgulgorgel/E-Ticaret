@@ -1,0 +1,81 @@
+﻿@model IEnumerable<E_TicaretMVC.Models.Urun>
+@{
+    ViewBag.Title = "Ürün OzellikEkle";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+@section head{
+<script src="~/Content/Admin/js/jquery-1.8.3.min.js"></script>
+    <script>
+        $(document).ready(function myfunction() {
+            $("#urun").change(function myfunction()
+            {
+                var id = $(this).val();
+                var sonuc = id.split('-')[1];
+                alert(sonuc);
+                $.ajax
+                ({
+                    type: "GET",
+                    url: "/Admin/UrunOzellikTipWidget",
+                    data: { katId: sonuc },
+                    success:function myfunction(veri)
+                    {
+                        $.ajax
+                      ({
+                        type: "GET",
+                        url: "/Admin/UrunOzellikTipListele",
+                        data: { list: veri },
+                        success:function myfunction(sb)
+                        {
+                            alert("basarılı");
+                            $(".panel-body").html(sb);
+                        }
+
+                        
+                    },
+                    error:function myfunction()
+                    {
+                        alert("hata");
+                    }
+                });
+                           
+            })    
+        });
+    </script>
+}
+<h2>UrunOzellikEkle</h2>
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                Ürün Özellik Ekle
+            </header>
+            <div class="panel-body" style="margin-top: 25px;">
+                <form role="form" action="/Admin/UrunOzellikEkle/UrunEkle" class="form-horizontal tasi-form" method="post">
+                    <div class="form-group has-success">
+                        <label class="col-lg-2 control-label">Urun</label>
+                        <div class="col-lg-10">
+                            <select class="form-control m-bot15" id="urun" name="UrunID">
+                                @foreach (var urun in Model)
+                                {
+                                    <option value="@urun.UrunID-@urun.KategoriID">@urun.Adi</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    @{
+                        Html.RenderAction("UrunOzellikTipWidget", "Admin");
+                        Html.RenderAction("UrunOzellikDegerWidget", "Admin");
+                    }
+                   
+                 
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <button class="btn btn-danger" type="submit">KAYDET</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+

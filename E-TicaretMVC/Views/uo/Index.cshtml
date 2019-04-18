@@ -1,0 +1,40 @@
+﻿@model IEnumerable<E_TicaretMVC.Models.UrunOzellik>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OzellikDeger.Adi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OzellikTip.Adi)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.OzellikDeger.Adi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OzellikTip.Adi)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.UrunID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.UrunID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.UrunID })
+        </td>
+    </tr>
+}
+
+</table>

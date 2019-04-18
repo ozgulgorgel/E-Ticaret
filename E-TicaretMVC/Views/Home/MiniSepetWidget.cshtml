@@ -1,0 +1,100 @@
+﻿@model E_TicaretMVC.Models.Sepet
+    <!-- cart-js -->
+<script src="~/Content/web/js/jquery-1.10.0.min.js"></script>
+<script>
+    $(document).ready(function myfunction() {
+
+        $(".urunSil").click(function UrunSil() {
+
+            var uId = $(this).attr("name");//ürün idyi aldık
+            $.ajax({
+                type: "GET",
+                url: "/Home/SepetUrunAdetDusur",
+                data: { id: uId },//parametre gönderiyoruz
+                success: function myfunction() {
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/Home/MiniSepetWidget",
+                        success: function VeriGetir(veri) {
+                            $(".cart-all").html('');
+                            $(".cart-all").html(veri);
+                        }
+
+                    })
+
+                },
+                error: function myfunction() {
+
+                    alert("errorr");
+                }
+
+            });
+        });
+    });
+
+</script>
+
+
+
+
+
+
+
+<div class="cart-all">
+   
+    <a href="/Home/Sepetim" class="w3view-cart" type="submit" name="submit" value=""><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></a>
+
+
+ 
+    <div class="inside-cart">
+        <p>
+            @if (Model != null)
+            {
+                <span>sepette toplam @Model.Urunler.Sum(x => x.Adet) Adet ürün bulunmaktadır.</span>
+            }
+            else
+            {
+                <span>sepette 0 Adet ürün bulunmaktadır.</span>
+            }
+        </p>
+        <ul>
+            @if (Model != null)
+            {
+                foreach (var item in Model.Urunler)
+                {
+                    <li>
+                        <div class="inside-cart-image">
+                            @if (item.Urun.Resims != null)
+                            {
+                                <img src="@item.Urun.Resims.FirstOrDefault(x=>x.Varsayilan==true).OrtaYol" alt="product name" />
+                            }
+                        </div>
+                        <button class="urunSil" name="@item.Urun.UrunID">X</button>
+                        <a href="/Home/UrunDetay/@item.Urun.Adi">@item.Urun.Adi</a>
+                        <p>Tutar:@item.Tutar.ToString("C2")</p>
+                        <p>Adet:@item.Adet</p>
+                    </li>
+                }
+            }
+
+        </ul>
+        <div class="sbmincart-footer"> 
+          <div class="sbmincart-subtotal"> 
+              @if (Model != null)
+              {
+              <span>Toplam:@Model.ToplamTutar.ToString("C2")</span>
+              }
+              else
+              {
+                  <span>0 ₺</span>
+              }
+              </div>
+            
+         </div>
+      
+       
+    </div>
+</div>
+
+<!-- //cart-js -->
